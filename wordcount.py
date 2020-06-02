@@ -25,7 +25,7 @@ should return a dictionary with words as keys, and their counts as values.
 
 # Your name, plus anyone who helped you with this assignment
 # Give credit where credit is due.
-__author__ = "???"
+__author__ = "sohail aslam Chris Warren Ramon Hamilton"
 
 import sys
 
@@ -33,7 +33,17 @@ import sys
 def create_word_dict(filename):
     """Returns a word/count dict for the given file."""
     # Your code here
-    return
+    word_dict = {}
+    with open(filename) as f:
+        for line in f:
+            words = line.split()
+            for word in words:
+                if word in word_dict:
+                    word_dict[word] += 1
+                else:
+                    word_dict[word] = 1
+
+    return word_dict
 
 
 def print_words(filename):
@@ -41,17 +51,34 @@ def print_words(filename):
     by word for the given file.
     """
     # Your code here
-    return
+    new_dict = create_word_dict(filename)
+    # dict_items = new_dict.items()
+    # sorted_items = sorted(dict_items)
+    # for word in sorted_items:
+    #     print(str(word[0]) + ':' + str(word[1]))
+    for each in sorted(new_dict):
+        print(each, " : ", new_dict[each])
+
+    return new_dict
 
 
 def print_top(filename):
     """Prints the top count listing for the given file."""
     # Your code here
-    return
-
+    new_dict = create_word_dict(filename)
+    # dict_items = new_dict.items()
+    # sorted_items = sorted(dict_items, key=lambda x: x[1], reverse=True)
+    # for word in sorted_items[:20]:
+    #     print(str(word[0]) + ':' + str(word[1]))
+    top_twenty = sorted(new_dict, key=lambda item: -new_dict[item])[:20]
+    for each in top_twenty:
+        print(each + " : " + str(new_dict[each]))
+    return top_twenty
 
 # This basic command line argument parsing code is provided and calls
 # the print_words() and print_top() functions which you must implement.
+
+
 def main(args):
     if len(args) != 2:
         print('usage: python wordcount.py {--count | --topcount} file')
