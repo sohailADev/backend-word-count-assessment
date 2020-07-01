@@ -32,17 +32,15 @@ import sys
 
 def create_word_dict(filename):
     """Returns a word/count dict for the given file."""
-    # Your code here
     word_dict = {}
-    with open(filename) as f:
-        for line in f:
-            words = line.split()
-            for word in words:
-                if word in word_dict:
-                    word_dict[word] += 1
-                else:
-                    word_dict[word] = 1
-
+    with open(filename, encoding="utf8") as file:
+        text = file.read().lower().split()
+    word_dict = {}
+    for word in text:
+        if word.lower() in word_dict.keys():
+            word_dict[word] += 1
+        else:
+            word_dict[word] = 1
     return word_dict
 
 
@@ -50,33 +48,22 @@ def print_words(filename):
     """Prints one per line '<word> : <count>', sorted
     by word for the given file.
     """
-    # Your code here
-    new_dict = create_word_dict(filename)
-    # dict_items = new_dict.items()
-    # sorted_items = sorted(dict_items)
-    # for word in sorted_items:
-    #     print(str(word[0]) + ':' + str(word[1]))
-    for each in sorted(new_dict):
-        print(each, " : ", new_dict[each])
+    word_dict = create_word_dict(filename)
+    for each in sorted(word_dict):
+        print(each, " : ", word_dict[each])
 
-    return new_dict
+
+def sort_by_count(t):
+    return t[1]
 
 
 def print_top(filename):
     """Prints the top count listing for the given file."""
-    # Your code here
-    new_dict = create_word_dict(filename)
-    # dict_items = new_dict.items()
-    # sorted_items = sorted(dict_items, key=lambda x: x[1], reverse=True)
-    # for word in sorted_items[:20]:
-    #     print(str(word[0]) + ':' + str(word[1]))
-    top_twenty = sorted(new_dict, key=lambda item: -new_dict[item])[:20]
-    for each in top_twenty:
-        print(each + " : " + str(new_dict[each]))
-    return top_twenty
-
-# This basic command line argument parsing code is provided and calls
-# the print_words() and print_top() functions which you must implement.
+    top_word_dict = create_word_dict(filename)
+    top_sorted_words = sorted(
+        list(top_word_dict.items()), key=sort_by_count, reverse=True)
+    for k, v in top_sorted_words[:20]:
+        print(k, " : ", v)
 
 
 def main(args):
